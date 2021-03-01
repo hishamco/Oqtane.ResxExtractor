@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Oqtane.ResxExtractor</RootNamespace>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Oqtane.ResxExtractor.Core\Oqtane.ResxExtractor.Core.vbproj" />
+    <ProjectReference Include="..\Oqtane.ResxExtractor.CSharp\Oqtane.ResxExtractor.CSharp.vbproj" />
+    <ProjectReference Include="..\Oqtane.ResxExtractor.Razor\Oqtane.ResxExtractor.Razor.vbproj" />
+  </ItemGroup>
+
+</Project>

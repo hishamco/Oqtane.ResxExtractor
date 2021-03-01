@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1BC09F4B-FD64-4C68-944A-74E357A0013B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C782CE37-7284-4A79-A1A7-1FE3DBDDC0B9}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Oqtane.ResxExtractor.Core.Tests", "test\Oqtane.ResxExtractor.Core.Tests\Oqtane.ResxExtractor.Core.Tests.vbproj", "{CE769050-89CA-468F-A3E9-286EE03A8C3F}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Oqtane.ResxExtractor.Core", "src\Oqtane.ResxExtractor.Core\Oqtane.ResxExtractor.Core.vbproj", "{C8471A7E-86E6-4E6C-8701-21CAB7868281}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Oqtane.ResxExtractor.Razor", "src\Oqtane.ResxExtractor.Razor\Oqtane.ResxExtractor.Razor.vbproj", "{C85B9A78-D202-4728-8D81-E6D3751A86BD}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Oqtane.ResxExtractor.CSharp", "src\Oqtane.ResxExtractor.CSharp\Oqtane.ResxExtractor.CSharp.vbproj", "{A155D8D3-17B5-4460-A55E-0BF8122D2EDD}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Oqtane.ResxExtractor", "src\Oqtane.ResxExtractor\Oqtane.ResxExtractor.vbproj", "{A979B01F-EA2E-4570-9225-790A3097A4E1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE769050-89CA-468F-A3E9-286EE03A8C3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE769050-89CA-468F-A3E9-286EE03A8C3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE769050-89CA-468F-A3E9-286EE03A8C3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE769050-89CA-468F-A3E9-286EE03A8C3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8471A7E-86E6-4E6C-8701-21CAB7868281}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8471A7E-86E6-4E6C-8701-21CAB7868281}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8471A7E-86E6-4E6C-8701-21CAB7868281}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8471A7E-86E6-4E6C-8701-21CAB7868281}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C85B9A78-D202-4728-8D81-E6D3751A86BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C85B9A78-D202-4728-8D81-E6D3751A86BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C85B9A78-D202-4728-8D81-E6D3751A86BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C85B9A78-D202-4728-8D81-E6D3751A86BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A155D8D3-17B5-4460-A55E-0BF8122D2EDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A155D8D3-17B5-4460-A55E-0BF8122D2EDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A155D8D3-17B5-4460-A55E-0BF8122D2EDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A155D8D3-17B5-4460-A55E-0BF8122D2EDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A979B01F-EA2E-4570-9225-790A3097A4E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A979B01F-EA2E-4570-9225-790A3097A4E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A979B01F-EA2E-4570-9225-790A3097A4E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A979B01F-EA2E-4570-9225-790A3097A4E1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CE769050-89CA-468F-A3E9-286EE03A8C3F} = {C782CE37-7284-4A79-A1A7-1FE3DBDDC0B9}
+		{C8471A7E-86E6-4E6C-8701-21CAB7868281} = {1BC09F4B-FD64-4C68-944A-74E357A0013B}
+		{C85B9A78-D202-4728-8D81-E6D3751A86BD} = {1BC09F4B-FD64-4C68-944A-74E357A0013B}
+		{A155D8D3-17B5-4460-A55E-0BF8122D2EDD} = {1BC09F4B-FD64-4C68-944A-74E357A0013B}
+		{A979B01F-EA2E-4570-9225-790A3097A4E1} = {1BC09F4B-FD64-4C68-944A-74E357A0013B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69EE9FFB-5A56-425C-944A-77A333DCD1D0}
+	EndGlobalSection
+EndGlobal
