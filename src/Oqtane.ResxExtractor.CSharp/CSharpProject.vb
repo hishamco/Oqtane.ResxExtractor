@@ -7,7 +7,7 @@ Public Class CSharpProject
         MyBase.New(path)
     End Sub
 
-    Public Overrides ReadOnly Property Extension As String = ".csproj"
+    Public Overrides ReadOnly Property Extension() As String = ".csproj"
 
-    Public Overrides ReadOnly Property FilesExtension As String = ".cs"
+    Public Overrides ReadOnly Property FilesExtension() As String = ".cs"
 End Class
