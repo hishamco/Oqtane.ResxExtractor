@@ -36,7 +36,7 @@ Public MustInherit Class Project
 
     Public Sub LoadFiles()
         Dim folderPath As String = New FileInfo(Path).DirectoryName
-        For Each file In Directory.EnumerateFiles(folderPath, $"*{FilesExtension}")
+        For Each file In Directory.EnumerateFiles(folderPath, $"*{FilesExtension}", SearchOption.AllDirectories)
             _files.Add(New ProjectFile(file))
         Next
     End Sub

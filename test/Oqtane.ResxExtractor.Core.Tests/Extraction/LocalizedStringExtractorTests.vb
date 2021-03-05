@@ -18,10 +18,11 @@ Public Class LocalizedStringExtractorTests
         Dim occurrences As IEnumerable(Of LocalizedStringOccurence) = Await extractor.ExtractAsync()
 
         ' Assert
-        Assert.Equal(3, occurrences.Count())
+        Assert.Equal(4, occurrences.Count())
         Assert.Contains(occurrences, Function(o) o.Text = "Loading...")
         Assert.Contains(occurrences, Function(o) o.Text = "About")
         Assert.Contains(occurrences, Function(o) o.Text = "This is About page.")
+        Assert.Contains(occurrences, Function(o) o.Text = "Index from inner folder")
     End Sub
 
     <Fact>
