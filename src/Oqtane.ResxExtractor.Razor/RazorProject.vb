@@ -7,5 +7,9 @@ Public NotInheritable Class RazorProject
         MyBase.New(path)
     End Sub
 
-    Public Overrides ReadOnly Property FilesExtension() As String = ".razor"
+    Public Overrides ReadOnly Property FilesExtension() As String
+        Get
+            Return ".razor"
+        End Get
+    End Property
 End Class
