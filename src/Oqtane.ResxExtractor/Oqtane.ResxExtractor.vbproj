@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Oqtane.ResxExtractor</RootNamespace>
     <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>oqtane-extractor</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
