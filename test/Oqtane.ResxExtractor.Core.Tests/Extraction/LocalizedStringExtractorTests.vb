@@ -19,10 +19,10 @@ Public Class LocalizedStringExtractorTests
 
         ' Assert
         Assert.Equal(4, occurrences.Count())
-        Assert.Contains(occurrences, Function(o) o.Text = "Loading...")
-        Assert.Contains(occurrences, Function(o) o.Text = "About")
-        Assert.Contains(occurrences, Function(o) o.Text = "This is About page.")
-        Assert.Contains(occurrences, Function(o) o.Text = "Index from inner folder")
+        Assert.Contains(occurrences, Function(o) o.Text.ToString() = "Loading...")
+        Assert.Contains(occurrences, Function(o) o.Text.ToString() = "About")
+        Assert.Contains(occurrences, Function(o) o.Text.ToString() = "This is About page.")
+        Assert.Contains(occurrences, Function(o) o.Text.ToString() = "Index from inner folder")
     End Sub
 
     <Fact>
@@ -39,7 +39,7 @@ Public Class LocalizedStringExtractorTests
 
         ' Assert
         Dim occurence As LocalizedStringOccurence = occurrences.First()
-        Assert.Equal("About", occurence.Text)
+        Assert.Equal("About", occurence.Text.ToString())
         Assert.Equal("About.razor", occurence.Location.File.Name)
         Assert.Equal(17, occurence.Location.Column)
         Assert.Equal(3, occurence.Location.Line)

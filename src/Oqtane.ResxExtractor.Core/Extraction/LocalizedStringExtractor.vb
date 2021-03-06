@@ -32,7 +32,7 @@ Namespace Extraction
                                     .Line = i + 1,
                                     .Column = line.IndexOf(value) + 1
                                 },
-                                .Text = value
+                                .Text = New LocalizedString(value)
                             }
                             occurences.Add(occurence)
                         Next
