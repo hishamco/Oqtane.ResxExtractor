@@ -1,4 +1,6 @@
 ﻿Public Structure ResourceEntry
+    Public Shared Empty As New ResourceEntry(Nothing, Nothing)
+
     Public Sub New(name As String, value As String)
         Me.Name = name
         Me.Value = value

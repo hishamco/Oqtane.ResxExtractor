@@ -20,7 +20,10 @@ Namespace Extraction
                     Dim resourceKey As String = GetResourceKey(value)
 
                     For Each [property] As String In LocalizableProperties
-                        resources.Add(GetResource([property], value))
+                        Dim resource As ResourceEntry = GetResource([property], value)
+                        If Not resource.Equals(ResourceEntry.Empty) Then
+                            resources.Add(resource)
+                        End If
                     Next
                 End If
             Next
@@ -29,7 +32,7 @@ Namespace Extraction
         End Function
 
         Protected Shared Function GetResource(propertyName As String, tag As String) As ResourceEntry
-            Dim resource As ResourceEntry = Nothing
+            Dim resource As ResourceEntry = ResourceEntry.Empty
             Dim propertySpan = GetPropertySpan(propertyName, tag)
 
             If propertySpan.Start <> -1 AndAlso propertySpan.End <> -1 Then

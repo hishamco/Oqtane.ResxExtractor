@@ -8,6 +8,7 @@ Namespace Extraction
         Private Shared ReadOnly _localizerIdentifierNameRegularExpression As New Regex($"@{LocalizerIdentifierName.ViewLocalizer}\[""([\w\s\.!@,{{}}]+)""(,[\w\s]+)?\]", RegexOptions.Compiled)
 
         Private ReadOnly _projects As IEnumerable(Of IProject)
+        Private ReadOnly _resourceProviders As IEnumerable(Of IResourceProvider)
 
         Public Sub New(projects As IEnumerable(Of IProject))
             If projects Is Nothing Then
@@ -15,6 +16,10 @@ Namespace Extraction
             End If
 
             _projects = projects
+            _resourceProviders = New List(Of IResourceProvider) From {
+                New LabelComponentResourceProvider(),
+                New ActionLinkComponentResourceProvider()
+            }
         End Sub
 
         Public Async Function ExtractAsync() As Task(Of IEnumerable(Of LocalizedStringOccurence)) Implements ILocalizedStringExtractor.ExtractAsync
@@ -39,30 +44,25 @@ Namespace Extraction
                         Next
                     Next
 
-                    Dim labelComponentResources As IEnumerable(Of ResourceEntry) = GetLabelComponentResources(contents)
-                    For Each resource As ResourceEntry In labelComponentResources
-                        ' TODO: Get the resource location
-                        Dim occurence As New LocalizedStringOccurence With {
-                            .Location = New LocalizedStringLocation With {
-                                .File = projectFile,
-                                .Line = 0,
-                                .Column = 0
-                            },
-                            .Text = New LocalizedString(resource.Name, resource.Value)
-                        }
-                        occurences.Add(occurence)
+                    For Each resourceProvider As IResourceProvider In _resourceProviders
+                        Dim resourceResult As ProviderResourceResult = resourceProvider.DetermineProviderResourceResult(contents)
+                        For Each resource As ResourceEntry In resourceResult.Resources
+                            ' TODO: Get the resource location
+                            Dim occurence As New LocalizedStringOccurence With {
+                                .Location = New LocalizedStringLocation With {
+                                    .File = projectFile,
+                                    .Line = 0,
+                                    .Column = 0
+                                },
+                                .Text = New LocalizedString(resource.Name, resource.Value)
+                            }
+                            occurences.Add(occurence)
+                        Next
                     Next
                 Next
             Next
 
             Return occurences
-        End Function
-
-        Private Shared Function GetLabelComponentResources(contents As String) As IEnumerable(Of ResourceEntry)
-            Dim provider As New LabelComponentResourceProvider()
-            Dim result As ProviderResourceResult = provider.DetermineProviderResourceResult(contents)
-
-            Return result.Resources
         End Function
     End Class
 End Namespace
