@@ -19,7 +19,8 @@ Namespace Extraction
             _resourceProviders = New List(Of IResourceProvider) From {
                 New LabelComponentResourceProvider(),
                 New ActionLinkComponentResourceProvider(),
-                New ActionDialogComponentResourceProvider()
+                New ActionDialogComponentResourceProvider(),
+                New SectionComponentResourceProvider()
             }
         End Sub
 
