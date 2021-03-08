@@ -20,7 +20,8 @@ Namespace Extraction
                 New LabelComponentResourceProvider(),
                 New ActionLinkComponentResourceProvider(),
                 New ActionDialogComponentResourceProvider(),
-                New SectionComponentResourceProvider()
+                New SectionComponentResourceProvider(),
+                New TabPanelComponentResourceProvider()
             }
         End Sub
 
