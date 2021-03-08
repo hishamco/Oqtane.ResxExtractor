@@ -18,7 +18,8 @@ Namespace Extraction
             _projects = projects
             _resourceProviders = New List(Of IResourceProvider) From {
                 New LabelComponentResourceProvider(),
-                New ActionLinkComponentResourceProvider()
+                New ActionLinkComponentResourceProvider(),
+                New ActionDialogComponentResourceProvider()
             }
         End Sub
 
