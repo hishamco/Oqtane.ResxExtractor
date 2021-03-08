@@ -4,7 +4,7 @@ Namespace Extraction
     Public Class SectionComponentResourceProvider
         Inherits ComponentResourceProvider
 
-        Private Shared ReadOnly _regularExpression As New Regex("<Section(.*)?>(.*)?</Section>", RegexOptions.Compiled)
+        Private Shared ReadOnly _regularExpression As New Regex("<Section(.*)?>((.|\n)*)?</Section>", RegexOptions.Compiled)
         Private Shared ReadOnly _properties As New List(Of String) From {"Heading", "Name"}
 
         Public Sub New()

@@ -2,11 +2,14 @@
 Imports Xunit
 
 Public Class SectionComponentResourceProviderTests
-    <Fact>
-    Public Sub GetResourcesFromComponent()
+    <InlineData("<Section Heading=""Site Settings"" Name=""Settings"" ResourceKey=""SiteSettings""></Section>")>
+    <InlineData("<Section Heading=""Site Settings"" Name=""Settings"" ResourceKey=""SiteSettings"">
+    <p>Test</p>
+</Section>")>
+    <Theory>
+    Public Sub GetResourcesFromComponent(contents As String)
         ' Arrange
         Dim provider As New SectionComponentResourceProvider()
-        Dim contents As String = "<Section Heading=""Site Settings"" Name=""Settings"" ResourceKey=""SiteSettings""></Section>"
 
         ' Act
         Dim result As ProviderResourceResult = provider.DetermineProviderResourceResult(contents)
