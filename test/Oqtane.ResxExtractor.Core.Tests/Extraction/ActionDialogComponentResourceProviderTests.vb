@@ -20,4 +20,22 @@ Public Class ActionDialogComponentResourceProviderTests
         Assert.Equal("DeleteItem.Text", result.Resources.ElementAt(2).Name)
         Assert.Equal("Delete", result.Resources.ElementAt(2).Value)
     End Sub
+
+
+    <Fact>
+    Public Sub GetResourcesFromComponentWhereMessageContainsLocalizer()
+        ' Arrange
+        Dim provider As New ActionDialogComponentResourceProvider()
+        Dim contents As String = "<ActionDialog Header=""Delete Item"" Message=""@Localizer[""Are you sure you wish to delete this item {0}?"", Test]"" ResourceKey=""DeleteItem""/>"
+
+        ' Act
+        Dim result As ProviderResourceResult = provider.DetermineProviderResourceResult(contents)
+
+        ' Assert
+        Assert.NotEmpty(result.Resources)
+        Assert.Equal("DeleteItem.Header", result.Resources.First().Name)
+        Assert.Equal("Delete Item", result.Resources.First().Value)
+        Assert.Equal("DeleteItem.Message", result.Resources.Last().Name)
+        Assert.Equal("Are you sure you wish to delete this item {0}?", result.Resources.Last().Value)
+    End Sub
 End Class

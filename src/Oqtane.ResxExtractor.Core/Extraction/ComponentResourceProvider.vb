@@ -31,7 +31,7 @@ Namespace Extraction
             Return New ProviderResourceResult(resources)
         End Function
 
-        Protected Shared Function GetResource(propertyName As String, tag As String) As ResourceEntry
+        Protected Function GetResource(propertyName As String, tag As String) As ResourceEntry
             Dim resource As ResourceEntry = ResourceEntry.Empty
             Dim propertySpan = GetPropertySpan(propertyName, tag)
 
@@ -46,7 +46,7 @@ Namespace Extraction
             Return resource
         End Function
 
-        Protected Shared Function GetResourceKey(tag As String) As String
+        Protected Function GetResourceKey(tag As String) As String
             Dim resourceKey As String = Nothing
             Dim propertySpan = GetPropertySpan(ResourceKeyPropertyName, tag)
 
@@ -57,7 +57,7 @@ Namespace Extraction
             Return resourceKey
         End Function
 
-        Private Shared Function GetPropertySpan(propertyName As String, tag As String) As (Start As Integer, [End] As Integer)
+        Protected Overridable Function GetPropertySpan(propertyName As String, tag As String) As (Start As Integer, [End] As Integer)
             Dim propertySpan As (Integer, Integer) = (-1, -1)
             Dim propertyText As String = $"{propertyName}="
             Dim propertyIndex As Integer = tag.IndexOf(propertyText)
