@@ -21,7 +21,8 @@ Namespace Extraction
             Dim occurences As New List(Of LocalizedStringOccurence)()
             For Each project As IProject In _projects
                 For Each projectFile As IProjectFile In project.Files
-                    Dim fileLines() As String = Await File.ReadAllLinesAsync(projectFile.Path)
+                    Dim contents As String = Await File.ReadAllTextAsync(projectFile.Path)
+                    Dim fileLines() As String = contents.Split(Environment.NewLine)
                     For i As Integer = 0 To fileLines.Length - 1
                         Dim line As String = fileLines(i)
                         For Each match As Match In _localizerIdentifierNameRegularExpression.Matches(line)
@@ -37,10 +38,31 @@ Namespace Extraction
                             occurences.Add(occurence)
                         Next
                     Next
+
+                    Dim labelComponentResources As IEnumerable(Of ResourceEntry) = GetLabelComponentResources(contents)
+                    For Each resource As ResourceEntry In labelComponentResources
+                        ' TODO: Get the resource location
+                        Dim occurence As New LocalizedStringOccurence With {
+                            .Location = New LocalizedStringLocation With {
+                                .File = projectFile,
+                                .Line = 0,
+                                .Column = 0
+                            },
+                            .Text = New LocalizedString(resource.Name, resource.Value)
+                        }
+                        occurences.Add(occurence)
+                    Next
                 Next
             Next
 
             Return occurences
+        End Function
+
+        Private Shared Function GetLabelComponentResources(contents As String) As IEnumerable(Of ResourceEntry)
+            Dim provider As New LabelComponentResourceProvider()
+            Dim result As ProviderResourceResult = provider.DetermineProviderResourceResult(contents)
+
+            Return result.Resources
         End Function
     End Class
 End Namespace
