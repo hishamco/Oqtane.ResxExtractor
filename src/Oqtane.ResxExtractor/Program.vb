@@ -21,23 +21,15 @@ Module Program
         Dim culture As String = DefaultCulture
         Dim resourcesFolderName As String = _defaultResourcesFolderName
 
-        If args.Length > 3 Then
+        If args.Length > 2 Then
             Dim value As String = GetCommandOptionValue(args, "-c")
-            If IsNothing(value) Then
-                PrintHelp()
-
-                Return
-            Else
+            If value IsNot Nothing Then
                 culture = value
             End If
 
             value = GetCommandOptionValue(args, "-r")
 
-            If IsNothing(value) Then
-                PrintHelp()
-
-                Return
-            Else
+            If value IsNot Nothing Then
                 resourcesFolderName = value
             End If
         End If
@@ -109,8 +101,8 @@ Module Program
     End Sub
 
     Private Function GetCommandOptionValue(args() As String, ByVal optionName As String) As String
-        For i As Integer = 2 To args.Length
-            Dim tokens() As String = args(i).Split("=")
+        For i As Integer = 2 To args.Length - 1
+            Dim tokens() As String = args(i).Split("=", StringSplitOptions.RemoveEmptyEntries)
             If tokens.Length = 2 AndAlso tokens(0) = optionName Then
                 Return tokens(1)
             End If
