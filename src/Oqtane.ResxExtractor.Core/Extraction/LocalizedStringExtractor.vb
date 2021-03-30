@@ -5,7 +5,7 @@ Namespace Extraction
     Public Class LocalizedStringExtractor
         Implements ILocalizedStringExtractor
 
-        Private Shared ReadOnly _localizerIdentifierNameRegularExpression As New Regex($"@{LocalizerIdentifierName.ViewLocalizer}\[""([\w\s\.!@,{{}}]+)""(,[\w\s]+)?\]", RegexOptions.Compiled)
+        Private Shared ReadOnly _localizerIdentifierNameRegularExpression As New Regex("@" + LocalizerIdentifierName.ViewLocalizer + "\[""(?<Key>.+)""(,.+)?\]", RegexOptions.Compiled)
 
         Private ReadOnly _projects As IEnumerable(Of IProject)
         Private ReadOnly _resourceProviders As IEnumerable(Of IResourceProvider)
@@ -34,7 +34,7 @@ Namespace Extraction
                     For i As Integer = 0 To fileLines.Length - 1
                         Dim line As String = fileLines(i)
                         For Each match As Match In _localizerIdentifierNameRegularExpression.Matches(line)
-                            Dim value = match.Groups(1).Value
+                            Dim value As String = match.Groups("Key").Value
                             Dim occurence As New LocalizedStringOccurence With {
                                 .Location = New LocalizedStringLocation With {
                                     .File = projectFile,
