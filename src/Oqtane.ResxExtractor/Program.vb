@@ -1,3 +1,4 @@
+Imports System.Globalization
 Imports System.IO
 Imports Oqtane.ResxExtractor.Core
 Imports Oqtane.ResxExtractor.Core.Extraction
@@ -5,15 +6,34 @@ Imports Oqtane.ResxExtractor.Core.Generation
 Imports Oqtane.ResxExtractor.Razor
 
 Module Program
+    Private Const DefaultCulture As String = "en"
+
     Sub Main(args As String())
-        If args.Length <> 2 Then
+        If args.Length < 2 OrElse args.Length > 3 Then
             PrintHelp()
 
             Return
         End If
 
-        Dim sourcePath = args(0)
-        Dim destinationPath = args(1)
+        Dim sourcePath As String = args(0)
+        Dim destinationPath As String = args(1)
+        Dim culture As String = DefaultCulture
+
+        If args.Length = 3 Then
+            Dim tokens() As String = args(2).Split("=")
+            If tokens.Length = 2 AndAlso tokens(0) = "-c" Then
+                culture = tokens(1)
+            Else
+                PrintHelp()
+
+                Return
+            End If
+        End If
+
+        Dim cultureInfo As CultureInfo = CultureInfo.GetCultureInfo(culture)
+        Dim cultureFolderName As String = $"{cultureInfo.DisplayName.Split(" ")(0)} ({cultureInfo.Name})"
+
+        destinationPath = Path.Combine(destinationPath, cultureFolderName)
 
         If Directory.Exists(sourcePath) Then
             Dim localizedStringCollection As New LocalizedStringCollection()
@@ -54,11 +74,13 @@ Module Program
     End Sub
 
     Private Sub PrintHelp()
-        Console.WriteLine("Usage: oqtane-extractor <SOURCE_PATH> <DESTINATION_PATH>")
+        Console.WriteLine("Usage: oqtane-extractor <SOURCE_PATH> <DESTINATION_PATH> - ")
         Console.WriteLine()
         Console.WriteLine("Arguments:")
         Console.WriteLine("  <SOURCE_PATH>        The path to the source directory, that contains all projects to be scanned.")
         Console.WriteLine("  <DESTINATION_PATH>   The path to a directory where RESX files will be generated.")
+        Console.WriteLine("Options:")
+        Console.WriteLine("  -c                   The two letter code for the language that you target.")
     End Sub
 
     Private Sub PrintProjectStats(ByVal projectPath As String, ByVal localizedStringsCount As Integer)
