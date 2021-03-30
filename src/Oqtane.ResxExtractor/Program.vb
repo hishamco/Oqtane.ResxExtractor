@@ -7,9 +7,10 @@ Imports Oqtane.ResxExtractor.Razor
 
 Module Program
     Private Const DefaultCulture As String = "en"
+    Private ReadOnly _defaultResourcesFolderName As String = "Resources"
 
     Sub Main(args As String())
-        If args.Length < 2 OrElse args.Length > 3 Then
+        If args.Length < 2 OrElse args.Length > 4 Then
             PrintHelp()
 
             Return
@@ -18,15 +19,26 @@ Module Program
         Dim sourcePath As String = args(0)
         Dim destinationPath As String = args(1)
         Dim culture As String = DefaultCulture
+        Dim resourcesFolderName As String = _defaultResourcesFolderName
 
-        If args.Length = 3 Then
-            Dim tokens() As String = args(2).Split("=")
-            If tokens.Length = 2 AndAlso tokens(0) = "-c" Then
-                culture = tokens(1)
-            Else
+        If args.Length > 3 Then
+            Dim value As String = GetCommandOptionValue(args, "-c")
+            If IsNothing(value) Then
                 PrintHelp()
 
                 Return
+            Else
+                culture = value
+            End If
+
+            value = GetCommandOptionValue(args, "-r")
+
+            If IsNothing(value) Then
+                PrintHelp()
+
+                Return
+            Else
+                resourcesFolderName = value
             End If
         End If
 
@@ -54,6 +66,8 @@ Module Program
                 Dim results = localizedStringCollection.SelectMany(Function(s) s.Locations).GroupBy(Function(l) l.File.Path)
                 For Each result In results
                     Dim filePath As String = result.Key.Substring(sourcePath.Length + 1)
+                    filePath = filePath.Insert(filePath.IndexOf(Path.DirectorySeparatorChar) + 1, resourcesFolderName & Path.DirectorySeparatorChar)
+
                     Dim resourcesPath As String = Path.Combine(destinationPath, filePath.Replace(".razor", ".resx"))
                     Try
                         Dim resxWriter As New ResxWriter(resourcesPath)
@@ -74,13 +88,14 @@ Module Program
     End Sub
 
     Private Sub PrintHelp()
-        Console.WriteLine("Usage: oqtane-extractor <SOURCE_PATH> <DESTINATION_PATH> - ")
+        Console.WriteLine("Usage: oqtane-extractor <SOURCE_PATH> <DESTINATION_PATH> [Options]")
         Console.WriteLine()
         Console.WriteLine("Arguments:")
         Console.WriteLine("  <SOURCE_PATH>        The path to the source directory, that contains all projects to be scanned.")
         Console.WriteLine("  <DESTINATION_PATH>   The path to a directory where RESX files will be generated.")
         Console.WriteLine("Options:")
         Console.WriteLine("  -c                   The two letter code for the language that you target.")
+        Console.WriteLine("  -r                   The resources folder name.")
     End Sub
 
     Private Sub PrintProjectStats(ByVal projectPath As String, ByVal localizedStringsCount As Integer)
@@ -92,4 +107,15 @@ Module Program
         Console.Write(" strings.")
         Console.WriteLine()
     End Sub
+
+    Private Function GetCommandOptionValue(args() As String, ByVal optionName As String) As String
+        For i As Integer = 2 To args.Length
+            Dim tokens() As String = args(i).Split("=")
+            If tokens.Length = 2 AndAlso tokens(0) = optionName Then
+                Return tokens(1)
+            End If
+        Next
+
+        Return Nothing
+    End Function
 End Module
