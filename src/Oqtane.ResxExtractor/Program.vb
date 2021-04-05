@@ -60,7 +60,7 @@ Module Program
                     Dim filePath As String = result.Key.Substring(sourcePath.Length + 1)
                     filePath = filePath.Insert(filePath.IndexOf(Path.DirectorySeparatorChar) + 1, resourcesFolderName & Path.DirectorySeparatorChar)
 
-                    Dim resourcesPath As String = Path.Combine(destinationPath, filePath.Replace(".razor", ".resx"))
+                    Dim resourcesPath As String = Path.Combine(destinationPath, filePath.Replace(".razor", "." & culture & ".resx"))
                     Try
                         Dim resxWriter As New ResxWriter(resourcesPath)
                         For Each location In result
