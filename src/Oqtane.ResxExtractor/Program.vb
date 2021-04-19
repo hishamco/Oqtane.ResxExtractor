@@ -3,11 +3,13 @@ Imports System.IO
 Imports Oqtane.ResxExtractor.Core
 Imports Oqtane.ResxExtractor.Core.Extraction
 Imports Oqtane.ResxExtractor.Core.Generation
+Imports Oqtane.ResxExtractor.CSharp
 Imports Oqtane.ResxExtractor.Razor
 
 Module Program
     Private Const DefaultCulture As String = "en"
     Private ReadOnly _defaultResourcesFolderName As String = "Resources"
+    Private ReadOnly _scannedProjects() As String = {"Oqtane.Client.csproj", "Oqtane.Server.csproj"}
 
     Sub Main(args As String())
         If args.Length < 2 OrElse args.Length > 4 Then
@@ -41,11 +43,13 @@ Module Program
 
         If Directory.Exists(sourcePath) Then
             Dim localizedStringCollection As New LocalizedStringCollection()
-            Dim projectPaths = Directory.EnumerateFiles(sourcePath, $"*.csproj", SearchOption.AllDirectories)
+            Dim projectPaths = Directory.EnumerateFiles(sourcePath, $"*.csproj", SearchOption.AllDirectories).
+                Where(Function(f) _scannedProjects.Contains(Path.GetFileName(f)))
 
             For Each projectPath In projectPaths
                 Dim projects As New List(Of IProject) From {
-                    New RazorProject(projectPath)
+                    New RazorProject(projectPath),
+                    New CSharpProject(projectPath)
                 }
                 Dim localizedStringExtractor As New LocalizedStringExtractor(projects)
                 Dim localizedStringOccurences As IEnumerable(Of LocalizedStringOccurence) = localizedStringExtractor.ExtractAsync().GetAwaiter().GetResult()
@@ -60,7 +64,7 @@ Module Program
                     Dim filePath As String = result.Key.Substring(sourcePath.Length + 1)
                     filePath = filePath.Insert(filePath.IndexOf(Path.DirectorySeparatorChar) + 1, resourcesFolderName & Path.DirectorySeparatorChar)
 
-                    Dim resourcesPath As String = Path.Combine(destinationPath, filePath.Replace(".razor", ".resx"))
+                    Dim resourcesPath As String = Path.Combine(destinationPath, filePath.Replace(Path.GetExtension(filePath), $".{culture}.resx"))
                     Try
                         Dim resxWriter As New ResxWriter(resourcesPath)
                         For Each location In result

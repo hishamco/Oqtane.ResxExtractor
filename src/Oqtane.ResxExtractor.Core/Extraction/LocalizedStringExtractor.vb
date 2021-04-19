@@ -5,7 +5,8 @@ Namespace Extraction
     Public Class LocalizedStringExtractor
         Implements ILocalizedStringExtractor
 
-        Private Shared ReadOnly _localizerIdentifierNameRegularExpression As New Regex("@" + LocalizerIdentifierName.ViewLocalizer + "\[""(?<Key>.+)""(,.+)?\]", RegexOptions.Compiled)
+        Private Shared ReadOnly _codeLocalizerIdentifierNameRegularExpression As New Regex(LocalizerIdentifierName.CodeLocalizer + "\[""(?<Key>.+)""(,.+)?\]", RegexOptions.Compiled)
+        Private Shared ReadOnly _viewLocalizerIdentifierNameRegularExpression As New Regex(LocalizerIdentifierName.ViewLocalizer + "\[""(?<Key>.+)""(,.+)?\]", RegexOptions.Compiled)
 
         Private ReadOnly _projects As IEnumerable(Of IProject)
         Private ReadOnly _resourceProviders As IEnumerable(Of IResourceProvider)
@@ -33,7 +34,20 @@ Namespace Extraction
                     Dim fileLines() As String = contents.Split(Environment.NewLine)
                     For i As Integer = 0 To fileLines.Length - 1
                         Dim line As String = fileLines(i)
-                        For Each match As Match In _localizerIdentifierNameRegularExpression.Matches(line)
+                        For Each match As Match In _codeLocalizerIdentifierNameRegularExpression.Matches(line)
+                            Dim value As String = match.Groups("Key").Value
+                            Dim occurence As New LocalizedStringOccurence With {
+                                .Location = New LocalizedStringLocation With {
+                                    .File = projectFile,
+                                    .Line = i + 1,
+                                    .Column = line.IndexOf(value) + 1
+                                },
+                                .Text = New LocalizedString(value)
+                            }
+                            occurences.Add(occurence)
+                        Next
+
+                        For Each match As Match In _viewLocalizerIdentifierNameRegularExpression.Matches(line)
                             Dim value As String = match.Groups("Key").Value
                             Dim occurence As New LocalizedStringOccurence With {
                                 .Location = New LocalizedStringLocation With {
