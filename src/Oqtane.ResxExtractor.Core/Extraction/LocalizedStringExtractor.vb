@@ -5,6 +5,8 @@ Namespace Extraction
     Public Class LocalizedStringExtractor
         Implements ILocalizedStringExtractor
 
+        Private Const RazorCompiledExtension As String = ".razor.g.cs"
+
         Private Shared ReadOnly _codeLocalizerIdentifierNameRegularExpression As New Regex(LocalizerIdentifierName.CodeLocalizer + "\[""(?<Key>.+)""(,.+)?\]", RegexOptions.Compiled)
         Private Shared ReadOnly _viewLocalizerIdentifierNameRegularExpression As New Regex(LocalizerIdentifierName.ViewLocalizer + "\[""(?<Key>.+)""(,.+)?\]", RegexOptions.Compiled)
 
@@ -30,6 +32,10 @@ Namespace Extraction
             Dim occurences As New List(Of LocalizedStringOccurence)()
             For Each project As IProject In _projects
                 For Each projectFile As IProjectFile In project.Files
+                    If projectFile.Path.EndsWith(RazorCompiledExtension) Then
+                        Continue For
+                    End If
+
                     Dim contents As String = Await File.ReadAllTextAsync(projectFile.Path)
                     Dim fileLines() As String = contents.Split(Environment.NewLine)
                     For i As Integer = 0 To fileLines.Length - 1
