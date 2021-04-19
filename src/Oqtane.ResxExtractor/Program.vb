@@ -8,6 +8,8 @@ Imports Oqtane.ResxExtractor.Razor
 
 Module Program
     Private Const DefaultCulture As String = "en"
+    Private Const ResourceExtension As String = ".resx"
+
     Private ReadOnly _defaultResourcesFolderName As String = "Resources"
     Private ReadOnly _scannedProjects() As String = {"Oqtane.Client.csproj", "Oqtane.Server.csproj"}
 
@@ -62,14 +64,26 @@ Module Program
                 Dim results = localizedStringCollection.SelectMany(Function(s) s.Locations).GroupBy(Function(l) l.File.Path)
                 For Each result In results
                     Dim filePath As String = result.Key.Substring(sourcePath.Length + 1)
+                    Dim fileExtension As String = If(culture = DefaultCulture, ResourceExtension, "." & culture & ResourceExtension)
+
                     filePath = filePath.Insert(filePath.IndexOf(Path.DirectorySeparatorChar) + 1, resourcesFolderName & Path.DirectorySeparatorChar)
 
-                    Dim resourcesPath As String = Path.Combine(destinationPath, filePath.Replace(Path.GetExtension(filePath), $".{culture}.resx"))
                     Try
+                        Dim resourcesPath As String = Path.Combine(destinationPath, filePath.Replace(Path.GetExtension(filePath), fileExtension))
+                        Dim resxDocument As XDocument = XDocument.Load(resourcesPath)
                         Dim resxWriter As New ResxWriter(resourcesPath)
                         For Each location In result
                             Dim localizedString As LocalizedString = localizedStringCollection.Where(Function(s) s.Locations.Contains(location)).Single()
-                            resxWriter.AddResource(localizedString.Name, localizedString.Value)
+                            If File.Exists(resourcesPath) Then
+                                Dim resourceString As XElement = resxDocument...<data>.SingleOrDefault(Function(e) e.@name.Equals(localizedString.Name))
+                                If IsNothing(resourceString) Then
+                                    resxWriter.AddResource(localizedString.Name, localizedString.Value)
+                                Else
+                                    resxWriter.AddResource(localizedString.Name, resourceString.<value>.Value)
+                                End If
+                            Else
+                                resxWriter.AddResource(localizedString.Name, localizedString.Value)
+                            End If
                         Next
 
                         resxWriter.Generate()
