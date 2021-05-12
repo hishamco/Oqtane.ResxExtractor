@@ -39,7 +39,7 @@ Module Program
         End If
 
         Dim cultureInfo As CultureInfo = CultureInfo.GetCultureInfo(culture)
-        Dim cultureFolderName As String = $"{cultureInfo.DisplayName.Split(" ")(0)} ({cultureInfo.Name})"
+        Dim cultureFolderName As String = $"{cultureInfo.EnglishName.Split(" ")(0)} ({cultureInfo.Name})"
 
         destinationPath = Path.Combine(destinationPath, cultureFolderName)
 
