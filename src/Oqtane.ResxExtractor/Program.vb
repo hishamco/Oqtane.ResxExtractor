@@ -70,11 +70,14 @@ Module Program
 
                     Try
                         Dim resourcesPath As String = Path.Combine(destinationPath, filePath.Replace(Path.GetExtension(filePath), fileExtension))
-                        Dim resxDocument As XDocument = XDocument.Load(resourcesPath)
+
+                        Dim resxDocument As XDocument = Nothing
+                        If File.Exists(resourcesPath) Then resxDocument = XDocument.Load(resourcesPath)
+
                         Dim resxWriter As New ResxWriter(resourcesPath)
                         For Each location In result
                             Dim localizedString As LocalizedString = localizedStringCollection.Where(Function(s) s.Locations.Contains(location)).Single()
-                            If File.Exists(resourcesPath) Then
+                            If resxDocument IsNot Nothing Then
                                 Dim resourceString As XElement = resxDocument...<data>.SingleOrDefault(Function(e) e.@name.Equals(localizedString.Name))
                                 If IsNothing(resourceString) Then
                                     resxWriter.AddResource(localizedString.Name, localizedString.Value)
